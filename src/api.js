@@ -60,12 +60,6 @@ router.post("/doSomething", async (req, res) => {
     } else {
       const item = JSON.parse(req.body.items);
       const file = req.files.file;
-      const filePath = `${__dirname}/files/${file.name}`;
-      file.mv(filePath, async (err) => {
-        if (err) {
-          res.send(err);
-        }
-
         const pdf = {
           pdf: file.data,
           contentType: file.mimetype,
@@ -85,16 +79,12 @@ router.post("/doSomething", async (req, res) => {
         };
         const data = await Invoice.create(invoiceDataWithFile);
 
-        if (data) {
-          return {
-            statusCode: 200,
-            data: JSON.stringify({
-              success: true,
-              message: "Dtat"
-            })
-          };
+        if(data){
+          res.status(200).json({
+            success: true,
+            message: "Bodda khuda laiggi"
+          })
         }
-      });
     }
   } catch (err) {
     res.status(400).send({ error: "bad request" });
