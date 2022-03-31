@@ -28,16 +28,34 @@ const invoiceModel = mongoose.model("invoice_informations", {
   item: Array,
   total: Number,
   description: String,
-  pdf: Buffer,
+  pdf: {pdf:Buffer,contentType:String},
 });
 
 router.get('/',(req,res) => {
   res.json({
-    "it":"hello"
+    "it":"let"
   })
 })
 
 router.post("/doSomething", async (req, res) => {
+  try {
+    if (req.files == null) {
+      const item = JSON.parse(req.body.items);
+      const data = await invoiceModel({
+        name: req.body.name,
+        email: req.body.email,
+        invoiceNo: req.body.invoiceNo,
+        purchaseNo: req.body.purchaseNo,
+        customerName: req.body.customerName,
+        issueDate: req.body.issueDate,
+        dueDate: req.body.dueDate,
+        item:item,
+        total: req.body.total,
+        description: req.body.description,
+      });
+      const dataSave = await data.save();
+      res.send(dataSave);
+    } else {
       const item = JSON.parse(req.body.items);
       const file = req.files.file;
       const filePath = `${__dirname}/files/${file.name}`
@@ -45,7 +63,11 @@ router.post("/doSomething", async (req, res) => {
         if (err) {
           res.send(err);
         }
-        const pdf = file.data
+        
+      const pdf = {
+        pdf:file.data,
+        contentType:file.mimetype
+      }
         const invoiceDataWithFile = {
           name: req.body.name,
           email: req.body.email,
@@ -65,6 +87,10 @@ router.post("/doSomething", async (req, res) => {
         const dataSave =  data.save();
         res.send(JSON.stringify({name:"success"}))
       });
+    }
+  } catch (err) {
+    res.status(400).send({ error: "bad request" });
+  }
 });
 app.use("/.netlify/functions/api", router);
 
