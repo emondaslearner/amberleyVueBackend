@@ -6,6 +6,7 @@ const connectDB = require("./connectDB");
 const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
 const fs = require("fs-extra");
+const path = require("path")
 
 const app = express();
 const router = express.Router();
@@ -29,11 +30,13 @@ const invoiceModel = mongoose.model("invoice_informations", {
   description: String,
   pdf: { pdf: Buffer, contentType: String },
 });
+
 router.get('/',(req,res) => {
   res.json({
     "it":"hello"
   })
 })
+
 router.post("/doSomething", async (req, res) => {
   try {
     if (req.files == null) {
@@ -54,16 +57,15 @@ router.post("/doSomething", async (req, res) => {
       res.send(dataSave);
     } else {
       const file = req.files.file;
+      console.log(file)
       const filePath = `/media/emon/information/learn vue/amberleyBackend/src/files/${file.name}`
       file.mv(filePath, (err) => {
         if (err) {
           res.send(err);
         }
-        const image = fs.readFileSync(filePath);
-        const encImg = image.toString("base64");
         const pdf = {
           contentType: file.mimetype,
-          pdf: Buffer.from(encImg, "base64"),
+          pdf: file.data,
         };
         const invoiceDataWithFile = {
           name: req.body.name,
