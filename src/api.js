@@ -37,10 +37,7 @@ const invoiceSchema = new mongoose.Schema(
 const Invoice = mongoose.model("invoice_informations", invoiceSchema);
 
 router.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Babe I am waiting for you!!"
-  })
+  res.json({ it: "com" });
 });
 
 router.post("/doSomething", async (req, res) => {
@@ -87,7 +84,16 @@ router.post("/doSomething", async (req, res) => {
           pdf,
         };
         const data = await Invoice.create(invoiceDataWithFile);
-        res.send(data);
+
+        if (data) {
+          return {
+            statusCode: 200,
+            data: JSON.stringify({
+              success: true,
+              message: "Dtat"
+            })
+          };
+        }
       });
     }
   } catch (err) {
