@@ -49,13 +49,14 @@ router.post("/doSomething", async (req, res) => {
         customerName: req.body.customerName,
         issueDate: req.body.issueDate,
         dueDate: req.body.dueDate,
-        item: req.body.item,
+        item:item,
         total: req.body.total,
         description: req.body.description,
       });
       const dataSave = await data.save();
       res.send(dataSave);
     } else {
+      const item = JSON.parse(req.body.items);
       const file = req.files.file;
       const filePath = `/media/emon/information/learn vue/amberleyBackend/src/files/${file.name}`
       file.mv(filePath, (err) => {
@@ -71,7 +72,7 @@ router.post("/doSomething", async (req, res) => {
           customerName: req.body.customerName,
           issueDate: req.body.issueDate,
           dueDate: req.body.dueDate,
-          item: req.body.item,
+          item:item,
           total: req.body.total,
           description: req.body.description,
           pdf,
