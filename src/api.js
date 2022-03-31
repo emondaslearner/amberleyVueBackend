@@ -29,11 +29,11 @@ const invoiceModel = mongoose.model("invoice_informations", {
   total: Number,
   description: String,
   pdf: {pdf:Buffer,contentType:String},
-});
+},{ timestamps: true });
 
 router.get('/',(req,res) => {
   res.json({
-    "it":"let"
+    "it":"lets"
   })
 })
 
