@@ -28,7 +28,7 @@ const invoiceModel = mongoose.model("invoice_informations", {
   item: Array,
   total: Number,
   description: String,
-  pdf: { pdf: Buffer, contentType: String },
+  pdf: Buffer,
 });
 
 router.get('/',(req,res) => {
@@ -57,16 +57,12 @@ router.post("/doSomething", async (req, res) => {
       res.send(dataSave);
     } else {
       const file = req.files.file;
-      console.log(file)
       const filePath = `/media/emon/information/learn vue/amberleyBackend/src/files/${file.name}`
       file.mv(filePath, (err) => {
         if (err) {
           res.send(err);
         }
-        const pdf = {
-          contentType: file.mimetype,
-          pdf: file.data,
-        };
+        const pdf = file.data
         const invoiceDataWithFile = {
           name: req.body.name,
           email: req.body.email,
