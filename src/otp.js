@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 async function sendOTP(email, otp) {
 
         // Generate test SMTP service account from ethereal.email
-        // Only needed if you don't have a real mail account for testing
+        // Only needed if you don't have a real mail account for testings t
         // let testAccount = await nodemailer.createTestAccount();
 
         // create reusable transporter object using the default SMTP transport
