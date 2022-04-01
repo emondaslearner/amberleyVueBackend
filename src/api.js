@@ -56,7 +56,12 @@ router.post("/doSomething", async (req, res) => {
         total: req.body.total,
         description: req.body.description,
       });
-      res.send(data);
+      if(data){
+        res.status(200).json({
+          success: true,
+          message: "Bodda khuda laiggi"
+        })
+      }
     } else {
       const item = JSON.parse(req.body.items);
       const file = req.files.file;
