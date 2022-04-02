@@ -10,13 +10,13 @@ async function sendOTP(email, otp) {
 
         // create reusable transporter object using the default SMTP transport
         const transporter =   nodemailer.createTransport({
-            host:  'smtp.gmail.com',
+            host:  process.env.MAIL_HOST,
             port: 587,
             secure: false,
             requireTLS: true,
             auth: {
-                user: 'emon.1000das@gmail.com',
-                pass: 'process.env.MAIL_PASS'
+                user: process.env.MAIL_USER,
+                pass: process.env.MAIL_PASS
             }
         });
 

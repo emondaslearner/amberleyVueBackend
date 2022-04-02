@@ -42,7 +42,6 @@ async function hash(key) {
 }
 
 async function verify(password, hash) {
-  console.log(password, hash);
   return new Promise((resolve, reject) => {
     const [salt, key] = hash.split(":");
     crypto.scrypt(password, salt, 16, (err, derivedKey) => {
@@ -54,7 +53,7 @@ async function verify(password, hash) {
 
 // Model
 
-const otpModel = mongoose.model("otpModels", {
+const otpSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
@@ -65,6 +64,7 @@ const otpModel = mongoose.model("otpModels", {
     required: [true, "Please Enter Your Email"],
   },
 });
+const otpModel = mongoose.model("otpModels",otpSchema)
 
 const invoiceSchema = new mongoose.Schema(
   {
@@ -105,46 +105,45 @@ router.post("/doSomething", async (req, res) => {
         total: req.body.total,
         description: req.body.description,
       });
-      if(data){
+      if (data) {
         res.status(200).json({
           success: true,
-          message: "Bodda khuda laiggi"
-        })
+          message: "Bodda khuda laiggi",
+        });
       }
     } else {
       const item = JSON.parse(req.body.items);
       const file = req.files.file;
-        const pdf = {
-          pdf: file.data,
-          contentType: file.mimetype,
-        };
-        const invoiceDataWithFile = {
-          name: req.body.name,
-          email: req.body.email,
-          invoiceNo: req.body.invoiceNo,
-          purchaseNo: req.body.purchaseNo,
-          customerName: req.body.customerName,
-          issueDate: req.body.issueDate,
-          dueDate: req.body.dueDate,
-          item: item,
-          total: req.body.total,
-          description: req.body.description,
-          pdf,
-        };
-        const data = await Invoice.create(invoiceDataWithFile);
+      const pdf = {
+        pdf: file.data,
+        contentType: file.mimetype,
+      };
+      const invoiceDataWithFile = {
+        name: req.body.name,
+        email: req.body.email,
+        invoiceNo: req.body.invoiceNo,
+        purchaseNo: req.body.purchaseNo,
+        customerName: req.body.customerName,
+        issueDate: req.body.issueDate,
+        dueDate: req.body.dueDate,
+        item: item,
+        total: req.body.total,
+        description: req.body.description,
+        pdf,
+      };
+      const data = await Invoice.create(invoiceDataWithFile);
 
-        if(data){
-          res.status(200).json({
-            success: true,
-            message: "Bodda khuda laiggi"
-          })
-        }
+      if (data) {
+        res.status(200).json({
+          success: true,
+          message: "Bodda khuda laiggi",
+        });
+      }
     }
   } catch (err) {
     res.status(400).send({ error: "bad request" });
   }
 });
-
 
 router.get("/createOtp/:email", async (req, res) => {
   try {
