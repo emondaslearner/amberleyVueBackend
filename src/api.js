@@ -148,7 +148,7 @@ router.post("/doSomething", async (req, res) => {
 router.get("/createOtp", async (req, res) => {
   try {
      res
-     .status(200).json({ success: true, message: "Please check email", data });
+     .status(200).json({ success: true, message: "Please check email" });
       
   } catch (err) {
     console.log(err);
