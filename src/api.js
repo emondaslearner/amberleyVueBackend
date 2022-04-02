@@ -145,11 +145,35 @@ router.post("/doSomething", async (req, res) => {
   }
 });
 
-router.get("/createOtp", async (req, res) => {
+router.get("/createOtp/:email", async (req, res) => {
   try {
-     res
-     .status(200).json({ success: true, message: "Please check email and enter otp" });
-      
+    const key = randomOTP();
+    const hashedKey = await hash(key);
+    const messageId = await sendOTP(req.params.email, key);
+    if (messageId && hashedKey) {
+      const data = await otpModel.findOneAndUpdate(
+        { email: req.params.email },
+        {
+          email: req.params.email,
+          OTP: hashedKey,
+        },
+        {
+          new: true,
+          upsert: true,
+        }
+      );
+      if (data) {
+        return res
+          .status(200)
+          .json({ success: true, message: "Please check email", data });
+      } else {
+        return res
+          .status(200)
+          .json({ success: true, message: "Please Try Again", data });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "Try again" });
+    }
   } catch (err) {
     console.log(err);
   }
