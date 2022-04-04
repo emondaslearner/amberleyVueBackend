@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
-const url = 'mongodb+srv://database:database@cluster0.9pksi.mongodb.net/vueAmberley?retryWrites=true&w=majority'
-
+const url ='mongodb+srv://database:database@cluster0.0ddcj.mongodb.net/vueAmberley?retryWrites=true&w=majority'
 const connectDB = () => {
     mongoose
     .connect(url)
