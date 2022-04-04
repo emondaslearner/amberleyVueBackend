@@ -91,7 +91,7 @@ router.get("/", (req, res) => {
 
 router.post("/doSomething", async (req, res) => {
   try {
-    if (req.files == null) {
+    if (req.files == {}) {
       const item = JSON.parse(req.body.items);
       const data = await Invoice.create({
         name: req.body.name,
