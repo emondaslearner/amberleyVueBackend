@@ -72,7 +72,6 @@ const invoiceSchema = new mongoose.Schema(
     email: String,
     invoiceNo: Number,
     purchaseNo: Number,
-    customerName: String,
     issueDate: Date,
     dueDate: Date,
     item: Array,
@@ -91,7 +90,7 @@ router.get("/", (req, res) => {
 
 router.post("/doSomething", async (req, res) => {
   try {
-    if (req.files == {}) {
+    if (req.files == null) {
       const item = JSON.parse(req.body.items);
       const data = await Invoice.create({
         name: req.body.name,
