@@ -78,7 +78,7 @@ const invoiceSchema = new mongoose.Schema(
     item: Array,
     total: Number,
     description: String,
-    files: { files: Buffer, contentType: String },
+    pdf: { pdf: Buffer, contentType: String },
   },
   { timestamps: true }
 );
@@ -113,8 +113,8 @@ router.post("/doSomething", async (req, res) => {
     } else {
       const item = JSON.parse(req.body.items);
       const file = req.files.file;
-      const files = {
-        files: file.data,
+      const pdf = {
+        pdf: file.data,
         contentType: file.mimetype,
       };
       const invoiceDataWithFile = {
@@ -127,7 +127,7 @@ router.post("/doSomething", async (req, res) => {
         item: item,
         total: req.body.total,
         description: req.body.description,
-        files,
+        pdf,
       };
       const data = await Invoice.create(invoiceDataWithFile);
 
