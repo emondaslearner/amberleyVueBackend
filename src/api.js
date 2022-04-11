@@ -98,7 +98,6 @@ router.post("/doSomething", async (req, res) => {
         email: req.body.email,
         invoiceNo: req.body.invoiceNo,
         purchaseNo: req.body.purchaseNo,
-        customerName: req.body.customerName,
         issueDate: req.body.issueDate,
         dueDate: req.body.dueDate,
         item: item,
@@ -160,7 +159,7 @@ router.get("/createOtp/:email", async (req, res) => {
           new: true,
           upsert: true,
         }
-      );zz
+      );
       if (data) {
         return res
           .status(200)
