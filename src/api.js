@@ -78,7 +78,7 @@ const invoiceSchema = new mongoose.Schema(
     item: Array,
     total: Number,
     description: String,
-    pdf: { pdf: Buffer, contentType: String },
+    files: { files: Buffer, contentType: String },
   },
   { timestamps: true }
 );
@@ -114,8 +114,8 @@ router.post("/doSomething", async (req, res) => {
     } else {
       const item = JSON.parse(req.body.items);
       const file = req.files.file;
-      const pdf = {
-        pdf: file.data,
+      const files = {
+        files: file.data,
         contentType: file.mimetype,
       };
       const invoiceDataWithFile = {
@@ -123,13 +123,12 @@ router.post("/doSomething", async (req, res) => {
         email: req.body.email,
         invoiceNo: req.body.invoiceNo,
         purchaseNo: req.body.purchaseNo,
-        customerName: req.body.customerName,
         issueDate: req.body.issueDate,
         dueDate: req.body.dueDate,
         item: item,
         total: req.body.total,
         description: req.body.description,
-        pdf,
+        files,
       };
       const data = await Invoice.create(invoiceDataWithFile);
 
@@ -161,7 +160,7 @@ router.get("/createOtp/:email", async (req, res) => {
           new: true,
           upsert: true,
         }
-      );
+      );zz
       if (data) {
         return res
           .status(200)
